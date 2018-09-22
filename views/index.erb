@@ -5,6 +5,16 @@
 	<title>タイトル</title>
 </head>
 <body>
-
+	<!--<table>-->
+	<!--	<tr class="user_count">-->
+			<!--<td class="user"><%# user["user_id"] %></td>-->
+	<!--		<td class="count"><%# user["problem_count"] %></td>-->
+	<!--	</tr>-->
+	<!--</table>-->
+	
+	<form action="/tweet" method="post">
+		<input type="text" name="tweet" placeholder="ツイート"><br>
+		<input type="submit" value="ツイート">
+	</form>
 </body>
 </html>
