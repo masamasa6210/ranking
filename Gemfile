@@ -8,7 +8,17 @@ gem 'rake'
 gem 'sinatra-activerecord'
 
 gem 'bcrypt'
+gem 'pry'
+
+gem 'kaminari'
+
+gem 'will_paginate'
+gem 'will_paginate-bootstrap'
+
 gem 'oauth'
+gem 'omniauth'
+gem 'omniauth-twitter'
+gem 'twitter_oauth'
 
 group :development do
     gem 'sqlite3'

@@ -1,36 +1,38 @@
 require 'bundler/setup'
 Bundler.require
 require 'sinatra/reloader' if development?
+require 'kaminari'
+require 'will_paginate-bootstrap'
+
+require './models'
 
 require 'open-uri'
 require 'json'
 require 'net/http'
-require 'oauth'
-consumer_key = 'mYNlIsU4vDqAKyjts0sdDoA1l'
-consumer_secret = 'g3D8pq4l24kLFBRzkOGJ9DPUgEuIwJJhUzWu4YTaGcu79BNVMA'
-access_token = '3223138740-IwElJp0elZvLuFBpoBtMUnZMnuluMMvmNS9yTKK'
-access_token_secret = 'ffGXqAgQhLlpuBtd73QOBdld2Zz8jamoc1qCo2bJtAvlF'
 
 get '/' do
-    uri = URI("https://kenkoooo.com/atcoder/atcoder-api/info/ac")
-    res = Net::HTTP.get_response(uri)
-    json = JSON.parse(res.body)
-    @users = json
-    
-    erb :index
+    @ranks = User.page(params[:page]).per(100).order("effort_count desc")
+    erb :daily
 end
 
-post '/tweet' do
-    consumer = OAuth::Consumer.new(
-        consumer_key,
-        consumer_secret,
-        site:"https://api.twitter.com"
-    )
-    endpoint = OAuth::AccessToken.new(consumer,
-    access_token, access_token_secret)
+get '/daily' do
+    @ranks = User.page(params[:page]).per(100).order("effort_count desc")
+    erb :daily
+end
+
+get '/top' do
+    @ranks = User.page(params[:page]).per(100).order("now_count desc")
+    erb :top
+end
+
+get '/search/daily' do
+    @ranks = User.page(params[:page]).per(100).where('user_id LIKE ?', "%#{params[:user_id]}%")
     
-    response = endpoint.post("https://api.twitter.com/1.1/statuses/update.json", status: params[:tweet])
-    #result = JSON.parse(response.body)
+    erb :daily
+end
+
+get '/search/top' do
+    @ranks = User.page(params[:page]).per(100).where('user_id LIKE ?', "%#{params[:user_id]}%")
     
-    redirect "/"
+    erb :top
 end
